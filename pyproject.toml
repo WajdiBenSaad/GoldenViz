@@ -1,13 +1,41 @@
 [build-system]
-requires = ["setuptools>=61.0.0", "wheel"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "GoldenViz"
-version = "0.0.1"
-authors = [
-  { name="Wajdi Ben Saad" }
-]
-description = "do you know the golden rules of a successful data vizulisation? this library helps users to ensure their data viz communicate the information as clearly and neutrally as possible, while respecting a set of Golden Rules."
+version = "0.0.2"
+description = "GoldenViz is a Python library that analyzes matplotlib and seaborn charts and checks whether they follow data visualization best practices (the “Golden Rules of Data Visualization”)."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+  {name = "Wajdi Ben Saad", email = "wajdi@goldenviz.org"}
+]
+keywords = [
+    "data visualization",
+    "matplotlib",
+    "seaborn",
+    "dataviz",
+    "visualization",
+    "chart",
+    "plot",
+    "lint",
+    "quality",
+    "best practices"
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: Quality Assurance",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+Homepage = "https://github.com/WajdiBenSaad/GoldenViz"
+Documentation = "https://goldenviz.readthedocs.io"
+Repository = "https://github.com/WajdiBenSaad/GoldenViz"
