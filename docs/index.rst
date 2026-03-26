@@ -1,13 +1,18 @@
-Welcome to GoldenViz
-====================
+GoldenViz documentation
+=======================
 
-GoldenViz is a lightweight visual QA library for Matplotlib charts. It helps users check whether figures respect the first five Golden Rules of data visualization, and it is designed to work especially well in Jupyter notebooks.
+GoldenViz is a lightweight quality-checking library for Matplotlib charts.
+It focuses on the first five Golden Rules of data visualization and is built
+for Jupyter notebook workflows as well as explicit manual checks.
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents
 
    installation
-   usage
+   quickstart
+   manual_check
+   auto_mode
    rules
+   examples
    api

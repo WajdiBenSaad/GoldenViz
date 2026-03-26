@@ -1,16 +1,20 @@
 Installation
 ============
 
-GoldenViz currently targets Python 3.10+.
+Install GoldenViz from your local checkout or from PyPI once the package is published.
 
 .. code-block:: bash
 
    pip install GoldenViz
 
-For local development:
+For development or local testing:
 
 .. code-block:: bash
 
-   git clone https://github.com/WajdiBenSaad/GoldenViz.git
-   cd GoldenViz
    pip install -e .
+
+Notebook support works best when ``ipykernel`` is installed in the same environment.
+
+.. code-block:: bash
+
+   pip install ipykernel
