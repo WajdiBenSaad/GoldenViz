@@ -73,18 +73,26 @@ def _patch_inline_backend() -> bool:
     _STATE.original_inline_flush = backend_inline.flush_figures
 
     def wrapped_flush_figures(*args, **kwargs):
+        from matplotlib._pylab_helpers import Gcf
+        from matplotlib_inline.config import InlineBackend
+
         show_fn = backend_inline.show
-        to_draw = []
+        to_report = []
         try:
-            queued = list(getattr(show_fn, "_to_draw", []))
-            to_draw = [fig for fig in queued if getattr(fig, "axes", None)]
+            active_figures = [manager.canvas.figure for manager in Gcf.get_all_fig_managers()]
+            if InlineBackend.instance().close_figures:
+                to_report = [fig for fig in active_figures if getattr(fig, "axes", None)]
+            else:
+                queued = list(getattr(show_fn, "_to_draw", []))
+                active = set(active_figures)
+                to_report = [fig for fig in queued if fig in active and getattr(fig, "axes", None)]
         except Exception:
-            to_draw = []
+            to_report = []
 
         result = _STATE.original_inline_flush(*args, **kwargs)
 
-        if to_draw:
-            _report_figures(to_draw)
+        if to_report:
+            _report_figures(to_report)
         return result
 
     _STATE.wrapped_inline_flush = wrapped_flush_figures
