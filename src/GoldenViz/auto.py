@@ -15,7 +15,6 @@ class _AutoState:
     enabled: bool = False
     mode: Optional[str] = None
     original_show: Optional[Callable] = None
-    original_inline_show: Optional[Callable] = None
     original_inline_flush: Optional[Callable] = None
     reported_tokens: set = field(default_factory=set)
 
@@ -62,31 +61,25 @@ def _patch_inline_backend() -> bool:
     except Exception:
         return False
 
-    if _STATE.original_inline_show is None:
-        _STATE.original_inline_show = backend_inline.show
+    if _STATE.original_inline_flush is not None:
+        return True
 
-        def wrapped_inline_show(*args, **kwargs):
-            managers = list(plt._pylab_helpers.Gcf.get_all_fig_managers())
-            figures = [manager.canvas.figure for manager in managers]
-            result = _STATE.original_inline_show(*args, **kwargs)
-            _report_figures(figures)
-            return result
+    _STATE.original_inline_flush = backend_inline.flush_figures
 
-        backend_inline.show = wrapped_inline_show
+    def wrapped_flush_figures(*args, **kwargs):
+        show_fn = backend_inline.show
+        if not getattr(show_fn, "_draw_called", False):
+            return _STATE.original_inline_flush(*args, **kwargs)
 
-    if _STATE.original_inline_flush is None:
-        _STATE.original_inline_flush = backend_inline.flush_figures
+        active = set(
+            fm.canvas.figure for fm in plt._pylab_helpers.Gcf.get_all_fig_managers()
+        )
+        to_draw = [fig for fig in getattr(show_fn, "_to_draw", []) if fig in active]
+        result = _STATE.original_inline_flush(*args, **kwargs)
+        _report_figures(to_draw)
+        return result
 
-        def wrapped_flush_figures(*args, **kwargs):
-            if not backend_inline.show._draw_called:
-                return _STATE.original_inline_flush(*args, **kwargs)
-            active = set(fm.canvas.figure for fm in plt._pylab_helpers.Gcf.get_all_fig_managers())
-            to_draw = [fig for fig in backend_inline.show._to_draw if fig in active]
-            result = _STATE.original_inline_flush(*args, **kwargs)
-            _report_figures(to_draw)
-            return result
-
-        backend_inline.flush_figures = wrapped_flush_figures
+    backend_inline.flush_figures = wrapped_flush_figures
     return True
 
 
@@ -113,14 +106,11 @@ def disable() -> None:
 
     try:
         import matplotlib_inline.backend_inline as backend_inline
-        if _STATE.original_inline_show is not None:
-            backend_inline.show = _STATE.original_inline_show
         if _STATE.original_inline_flush is not None:
             backend_inline.flush_figures = _STATE.original_inline_flush
     except Exception:
         pass
 
-    _STATE.original_inline_show = None
     _STATE.original_inline_flush = None
     _STATE.enabled = False
     _STATE.mode = None
