@@ -1,2 +1,2 @@
-sphinx
-sphinx-rtd-theme
+sphinx>=7
+matplotlib>=3.7

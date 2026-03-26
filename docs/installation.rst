@@ -1,8 +1,16 @@
 Installation
 ============
 
-You can easily install **GoldenViz** using ``pip``.
+GoldenViz currently targets Python 3.10+.
 
 .. code-block:: bash
 
-   pip install goldenviz
+   pip install GoldenViz
+
+For local development:
+
+.. code-block:: bash
+
+   git clone https://github.com/WajdiBenSaad/GoldenViz.git
+   cd GoldenViz
+   pip install -e .
