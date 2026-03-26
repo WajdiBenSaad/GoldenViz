@@ -15,29 +15,25 @@ class _AutoState:
     enabled: bool = False
     mode: Optional[str] = None
     original_show: Optional[Callable] = None
-    original_inline_flush: Optional[Callable] = None
-    wrapped_inline_flush: Optional[Callable] = None
+    original_figure_repr_mimebundle: Optional[Callable] = None
     reported_tokens: set = field(default_factory=set)
 
 
 _STATE = _AutoState()
 
 
-def _figure_token(fig) -> tuple[int, int]:
-    return (id(fig), len(fig.axes))
+def _figure_token(fig) -> int:
+    return id(fig)
 
 
-
-def _report_figures(figures: List[object]) -> None:
-    for fig in figures:
-        if fig is None or not getattr(fig, "axes", None):
-            continue
-        token = _figure_token(fig)
-        if token in _STATE.reported_tokens:
-            continue
-        _STATE.reported_tokens.add(token)
-        display_report(analyze(fig))
-
+def _report_figure(fig) -> None:
+    if fig is None or not getattr(fig, "axes", None):
+        return
+    token = _figure_token(fig)
+    if token in _STATE.reported_tokens:
+        return
+    _STATE.reported_tokens.add(token)
+    display_report(analyze(fig))
 
 
 def _patch_matplotlib_show() -> None:
@@ -49,69 +45,42 @@ def _patch_matplotlib_show() -> None:
         managers = list(plt._pylab_helpers.Gcf.get_all_fig_managers())
         figures = [manager.canvas.figure for manager in managers]
         result = _STATE.original_show(*args, **kwargs)
-        _report_figures(figures)
+        for fig in figures:
+            _report_figure(fig)
         return result
 
     plt.show = wrapped_show
 
 
-
-def _patch_inline_backend() -> bool:
+def _patch_notebook_figure_display() -> bool:
     try:
-        from IPython import get_ipython
-        import matplotlib_inline.backend_inline as backend_inline
+        from matplotlib.figure import Figure
     except Exception:
         return False
 
-    if _STATE.original_inline_flush is not None:
+    if _STATE.original_figure_repr_mimebundle is not None:
         return True
 
-    ip = get_ipython()
-    if ip is None or not hasattr(ip, "events"):
+    original = getattr(Figure, "_repr_mimebundle_", None)
+    if original is None:
         return False
 
-    _STATE.original_inline_flush = backend_inline.flush_figures
+    _STATE.original_figure_repr_mimebundle = original
 
-    def wrapped_flush_figures(*args, **kwargs):
-        from matplotlib._pylab_helpers import Gcf
-        from matplotlib_inline.config import InlineBackend
+    def wrapped_repr_mimebundle(self, *args, **kwargs):
+        bundle = _STATE.original_figure_repr_mimebundle(self, *args, **kwargs)
+        _report_figure(self)
+        return bundle
 
-        show_fn = backend_inline.show
-        to_report = []
-        try:
-            active_figures = [manager.canvas.figure for manager in Gcf.get_all_fig_managers()]
-            if InlineBackend.instance().close_figures:
-                to_report = [fig for fig in active_figures if getattr(fig, "axes", None)]
-            else:
-                queued = list(getattr(show_fn, "_to_draw", []))
-                active = set(active_figures)
-                to_report = [fig for fig in queued if fig in active and getattr(fig, "axes", None)]
-        except Exception:
-            to_report = []
-
-        result = _STATE.original_inline_flush(*args, **kwargs)
-
-        if to_report:
-            _report_figures(to_report)
-        return result
-
-    _STATE.wrapped_inline_flush = wrapped_flush_figures
-    backend_inline.flush_figures = wrapped_flush_figures
-
-    try:
-        ip.events.unregister("post_execute", _STATE.original_inline_flush)
-    except Exception:
-        pass
-    ip.events.register("post_execute", wrapped_flush_figures)
+    Figure._repr_mimebundle_ = wrapped_repr_mimebundle
     return True
-
 
 
 def auto() -> None:
     if _STATE.enabled:
         return
 
-    notebook_mode = is_notebook_environment() and _patch_inline_backend()
+    notebook_mode = is_notebook_environment() and _patch_notebook_figure_display()
     if not notebook_mode:
         _patch_matplotlib_show()
         _STATE.mode = "matplotlib_show"
@@ -121,35 +90,23 @@ def auto() -> None:
     _STATE.enabled = True
 
 
-
 def disable() -> None:
     if _STATE.original_show is not None:
         plt.show = _STATE.original_show
         _STATE.original_show = None
 
     try:
-        from IPython import get_ipython
-        import matplotlib_inline.backend_inline as backend_inline
+        from matplotlib.figure import Figure
 
-        if _STATE.original_inline_flush is not None:
-            if _STATE.wrapped_inline_flush is not None:
-                try:
-                    ip = get_ipython()
-                    if ip is not None and hasattr(ip, "events"):
-                        ip.events.unregister("post_execute", _STATE.wrapped_inline_flush)
-                        ip.events.register("post_execute", _STATE.original_inline_flush)
-                except Exception:
-                    pass
-            backend_inline.flush_figures = _STATE.original_inline_flush
+        if _STATE.original_figure_repr_mimebundle is not None:
+            Figure._repr_mimebundle_ = _STATE.original_figure_repr_mimebundle
     except Exception:
         pass
 
-    _STATE.original_inline_flush = None
-    _STATE.wrapped_inline_flush = None
+    _STATE.original_figure_repr_mimebundle = None
     _STATE.enabled = False
     _STATE.mode = None
     _STATE.reported_tokens.clear()
-
 
 
 def is_auto_enabled() -> bool:

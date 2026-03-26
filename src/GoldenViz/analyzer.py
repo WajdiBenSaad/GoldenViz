@@ -37,13 +37,14 @@ def analyze(fig=None) -> FigureReport:
 
 
 
-def check(fig=None, *, display: bool = True) -> FigureReport:
+def check(fig=None, *, display: bool = True):
     report = analyze(fig)
     if display:
-        return display_report(report)
+        display_report(report)
+        return None
     return report
 
 
 
-def check_current(*, display: bool = True) -> FigureReport:
+def check_current(*, display: bool = True):
     return check(plt.gcf(), display=display)
