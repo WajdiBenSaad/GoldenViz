@@ -1,5 +1,15 @@
-"""
-do you know the golden rules of a successful data vizulisation? this library helps users to ensure their data viz communicate the information as clearly and neutrally as possible, while respecting a set of Golden Rules.
-"""
+"""GoldenViz public API."""
 
-__version__ = "0.0.2"
+from .analyzer import analyze, check, check_current
+from .auto import auto, disable, is_auto_enabled
+
+__all__ = [
+    "analyze",
+    "check",
+    "check_current",
+    "auto",
+    "disable",
+    "is_auto_enabled",
+]
+
+__version__ = "0.1.0"

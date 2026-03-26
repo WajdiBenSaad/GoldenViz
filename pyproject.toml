@@ -4,25 +4,25 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "GoldenViz"
-version = "0.0.2"
-description = "GoldenViz is a Python library that analyzes matplotlib and seaborn charts and checks whether they follow data visualization best practices (the “Golden Rules of Data Visualization”)."
+version = "0.1.0"
+description = "GoldenViz is a Python library that analyzes Matplotlib charts and checks whether they follow data visualization best practices."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [
   {name = "Wajdi Ben Saad", email = "wajdi@goldenviz.org"}
 ]
+dependencies = [
+  "matplotlib>=3.7",
+]
 keywords = [
     "data visualization",
     "matplotlib",
-    "seaborn",
     "dataviz",
     "visualization",
     "chart",
-    "plot",
-    "lint",
-    "quality",
-    "best practices"
+    "quality assurance",
+    "jupyter"
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -32,6 +32,9 @@ classifiers = [
     "Topic :: Software Development :: Quality Assurance",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Operating System :: OS Independent"
 ]
 
@@ -39,3 +42,9 @@ classifiers = [
 Homepage = "https://github.com/WajdiBenSaad/GoldenViz"
 Documentation = "https://goldenviz.readthedocs.io"
 Repository = "https://github.com/WajdiBenSaad/GoldenViz"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
