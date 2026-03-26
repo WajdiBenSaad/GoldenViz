@@ -23,13 +23,6 @@ class AxisReport:
     axis_title: Optional[str]
     rule_results: List[RuleResult]
 
-    @property
-    def score(self) -> int:
-        score_map = {"PASS": 20, "WARNING": 12, "FAIL": 0, "INFO": 16}
-        if not self.rule_results:
-            return 0
-        return sum(score_map[result.status] for result in self.rule_results)
-
 
 @dataclass(slots=True)
 class FigureReport:
@@ -43,12 +36,6 @@ class FigureReport:
         for axis_report in self.axes_reports:
             results.extend(axis_report.rule_results)
         return results
-
-    @property
-    def score(self) -> int:
-        if not self.axes_reports:
-            return 0
-        return round(sum(axis.score for axis in self.axes_reports) / len(self.axes_reports))
 
     @property
     def summary_counts(self) -> Dict[str, int]:

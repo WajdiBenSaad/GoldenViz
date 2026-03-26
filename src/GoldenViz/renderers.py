@@ -21,16 +21,8 @@ STATUS_BADGES = {
 }
 
 
-def _score_style(score: int) -> tuple[str, str, str]:
-    if score >= 90:
-        return ("#ecfdf3", "#abefc6", "#067647")
-    if score >= 75:
-        return ("#fffaeb", "#fedf89", "#b54708")
-    return ("#fef3f2", "#fecdca", "#b42318")
-
-
 def render_text_report(report: FigureReport) -> str:
-    lines = [f"GoldenViz Report - score: {report.score}/100"]
+    lines = ["GoldenViz Report"]
     for axis_report in report.axes_reports:
         axis_name = axis_report.axis_title or f"Axis {axis_report.axis_index + 1}"
         lines.append(f"\n[{axis_name}]")
@@ -62,7 +54,6 @@ def _render_rule_row(result: RuleResult) -> str:
 
 def render_html_report(report: FigureReport) -> str:
     counts = report.summary_counts
-    score_bg, score_border, score_color = _score_style(report.score)
     sections = []
     for axis_report in report.axes_reports:
         axis_name = axis_report.axis_title or f"Axis {axis_report.axis_index + 1}"
@@ -93,7 +84,6 @@ def render_html_report(report: FigureReport) -> str:
             <span style='display:block;font-size:18px;font-weight:800;color:#101828;'>GoldenViz report</span>
             <span style='display:block;font-size:13px;color:#475467;margin-top:4px;'>Automatic visual QA for the first five Golden Rules.</span>
           </span>
-          <span style='padding:8px 12px;border-radius:12px;background:{score_bg};border:1px solid {score_border};font-weight:800;color:{score_color};'>Score: {report.score}/100</span>
         </summary>
         <div style='display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;'>
           <span style='padding:4px 8px;border-radius:999px;background:#ecfdf3;color:#067647;font-weight:700;font-size:12px;'>PASS {counts['PASS']}</span>
