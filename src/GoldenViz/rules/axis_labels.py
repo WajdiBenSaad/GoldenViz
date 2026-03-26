@@ -1,3 +1,5 @@
+"""Rule implementation for axis-label checks."""
+
 from __future__ import annotations
 
 from matplotlib.axes import Axes
@@ -8,13 +10,16 @@ from GoldenViz.rules.base import Rule
 
 
 class AxisLabelsRule(Rule):
+    """Check whether both x-axis and y-axis labels are present and usable."""
+
     rule_id = "R2"
     rule_name = "Axis labels"
 
     def evaluate(self, ax: Axes) -> RuleResult:
+        """Assess label presence and detect labels that are probably too short."""
+        axis_title = (ax.get_title() or "").strip() or None
         xlabel = stringify_label(ax.get_xlabel())
         ylabel = stringify_label(ax.get_ylabel())
-        axis_title = (ax.get_title() or "").strip() or None
 
         missing = []
         if not xlabel:

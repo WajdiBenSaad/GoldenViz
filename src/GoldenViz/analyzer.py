@@ -1,6 +1,6 @@
-from __future__ import annotations
+"""Core analysis entry points for GoldenViz."""
 
-from typing import Iterable, Optional
+from __future__ import annotations
 
 import matplotlib.pyplot as plt
 
@@ -16,10 +16,19 @@ DEFAULT_RULES = [
     ChartTypeRule(),
     ReadabilityRule(),
 ]
+"""Default rule set applied to every visible axis."""
 
 
 
 def analyze(fig=None) -> FigureReport:
+    """Analyze a Matplotlib figure and return a structured report.
+
+    Args:
+        fig: Target figure. When omitted, the current active Matplotlib figure is used.
+
+    Returns:
+        A :class:`FigureReport` containing one :class:`AxisReport` per visible axis.
+    """
     if fig is None:
         fig = plt.gcf()
     ensure_canvas_drawn(fig)
@@ -38,6 +47,17 @@ def analyze(fig=None) -> FigureReport:
 
 
 def check(fig=None, *, display: bool = True):
+    """Analyze a figure and optionally render the report immediately.
+
+    Args:
+        fig: Target figure. Defaults to the current active figure.
+        display: Whether to render the report immediately. When ``False``, the
+            structured report is returned for programmatic use.
+
+    Returns:
+        ``None`` when ``display`` is ``True``. Otherwise returns a
+        :class:`FigureReport`.
+    """
     report = analyze(fig)
     if display:
         display_report(report)
@@ -47,4 +67,5 @@ def check(fig=None, *, display: bool = True):
 
 
 def check_current(*, display: bool = True):
+    """Shortcut for checking the current active Matplotlib figure."""
     return check(plt.gcf(), display=display)

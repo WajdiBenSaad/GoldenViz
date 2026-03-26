@@ -1,3 +1,5 @@
+"""Rule implementation for chart-type consistency checks."""
+
 from __future__ import annotations
 
 from matplotlib.axes import Axes
@@ -8,10 +10,13 @@ from GoldenViz.rules.base import Rule
 
 
 class ChartTypeRule(Rule):
+    """Perform light heuristics to flag questionable chart-type choices."""
+
     rule_id = "R4"
     rule_name = "Chart type"
 
     def evaluate(self, ax: Axes) -> RuleResult:
+        """Classify the chart and warn about obvious category-versus-line mismatches."""
         axis_title = (ax.get_title() or "").strip() or None
         kind = axis_kind(ax)
 

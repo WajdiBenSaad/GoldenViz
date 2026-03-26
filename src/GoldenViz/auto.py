@@ -1,7 +1,9 @@
+"""Automatic integration hooks for notebooks and regular Matplotlib usage."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Callable, List, Optional
+from typing import Callable, Optional
 
 import matplotlib.pyplot as plt
 
@@ -12,6 +14,8 @@ from GoldenViz._utils import is_notebook_environment
 
 @dataclass
 class _AutoState:
+    """Mutable runtime state for GoldenViz auto mode."""
+
     enabled: bool = False
     mode: Optional[str] = None
     original_show: Optional[Callable] = None
@@ -22,11 +26,15 @@ class _AutoState:
 _STATE = _AutoState()
 
 
+
 def _figure_token(fig) -> int:
+    """Return a stable runtime token used to avoid duplicate reports."""
     return id(fig)
 
 
+
 def _report_figure(fig) -> None:
+    """Render an analysis report for one figure if it has not been reported yet."""
     if fig is None or not getattr(fig, "axes", None):
         return
     token = _figure_token(fig)
@@ -36,12 +44,15 @@ def _report_figure(fig) -> None:
     display_report(analyze(fig))
 
 
+
 def _patch_matplotlib_show() -> None:
+    """Wrap :func:`matplotlib.pyplot.show` for non-notebook environments."""
     if _STATE.original_show is not None:
         return
     _STATE.original_show = plt.show
 
     def wrapped_show(*args, **kwargs):
+        """Display the original figures first, then render GoldenViz reports."""
         managers = list(plt._pylab_helpers.Gcf.get_all_fig_managers())
         figures = [manager.canvas.figure for manager in managers]
         result = _STATE.original_show(*args, **kwargs)
@@ -52,7 +63,9 @@ def _patch_matplotlib_show() -> None:
     plt.show = wrapped_show
 
 
+
 def _patch_notebook_figure_display() -> bool:
+    """Wrap notebook figure MIME rendering so reports appear below displayed charts."""
     try:
         from matplotlib.figure import Figure
     except Exception:
@@ -68,6 +81,7 @@ def _patch_notebook_figure_display() -> bool:
     _STATE.original_figure_repr_mimebundle = original
 
     def wrapped_repr_mimebundle(self, *args, **kwargs):
+        """Render the figure normally and then append the GoldenViz report."""
         bundle = _STATE.original_figure_repr_mimebundle(self, *args, **kwargs)
         _report_figure(self)
         return bundle
@@ -76,7 +90,9 @@ def _patch_notebook_figure_display() -> bool:
     return True
 
 
+
 def auto() -> None:
+    """Enable automatic report display for future Matplotlib figures."""
     if _STATE.enabled:
         return
 
@@ -90,7 +106,9 @@ def auto() -> None:
     _STATE.enabled = True
 
 
+
 def disable() -> None:
+    """Disable auto mode and restore original Matplotlib behavior."""
     if _STATE.original_show is not None:
         plt.show = _STATE.original_show
         _STATE.original_show = None
@@ -109,5 +127,7 @@ def disable() -> None:
     _STATE.reported_tokens.clear()
 
 
+
 def is_auto_enabled() -> bool:
+    """Return whether GoldenViz auto mode is currently active."""
     return _STATE.enabled

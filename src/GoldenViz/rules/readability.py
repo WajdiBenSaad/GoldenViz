@@ -1,3 +1,5 @@
+"""Rule implementation for readability checks."""
+
 from __future__ import annotations
 
 from matplotlib.axes import Axes
@@ -8,10 +10,13 @@ from GoldenViz.rules.base import Rule
 
 
 class ReadabilityRule(Rule):
+    """Detect crowded, overlapping, or tiny tick labels."""
+
     rule_id = "R5"
     rule_name = "Readable labels and ticks"
 
     def evaluate(self, ax: Axes) -> RuleResult:
+        """Assess whether tick labels are likely to be difficult to read."""
         axis_title = (ax.get_title() or "").strip() or None
         ensure_canvas_drawn(ax.figure)
 

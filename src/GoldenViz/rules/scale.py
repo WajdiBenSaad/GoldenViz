@@ -1,3 +1,5 @@
+"""Rule implementation for scale-related chart checks."""
+
 from __future__ import annotations
 
 from matplotlib.axes import Axes
@@ -8,10 +10,13 @@ from GoldenViz.rules.base import Rule
 
 
 class ScaleRule(Rule):
+    """Detect obvious scale issues such as truncated bar-chart baselines."""
+
     rule_id = "R3"
     rule_name = "Appropriate scale"
 
     def evaluate(self, ax: Axes) -> RuleResult:
+        """Assess whether the axis scale appears misleading or invalid."""
         axis_title = (ax.get_title() or "").strip() or None
         kind = axis_kind(ax)
         ymin, ymax = ax.get_ylim()

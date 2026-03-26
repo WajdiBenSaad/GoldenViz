@@ -1,3 +1,5 @@
+"""Rule implementation for chart-title quality checks."""
+
 from __future__ import annotations
 
 from matplotlib.axes import Axes
@@ -7,10 +9,13 @@ from GoldenViz.rules.base import Rule
 
 
 class TitleRule(Rule):
+    """Check that a chart has a non-empty and reasonably descriptive title."""
+
     rule_id = "R1"
     rule_name = "Clear title"
 
     def evaluate(self, ax: Axes) -> RuleResult:
+        """Assess title presence and basic descriptiveness for one axis."""
         title = (ax.get_title() or "").strip()
         axis_title = title or None
         if not title:

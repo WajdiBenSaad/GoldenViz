@@ -1,3 +1,5 @@
+"""Rule implementations for the currently supported GoldenViz checks."""
+
 from .axis_labels import AxisLabelsRule
 from .chart_type import ChartTypeRule
 from .readability import ReadabilityRule

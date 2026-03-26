@@ -1,7 +1,8 @@
+"""Text and HTML renderers for GoldenViz reports."""
+
 from __future__ import annotations
 
 from html import escape
-from typing import Iterable
 
 from GoldenViz._results import FigureReport, RuleResult
 
@@ -12,6 +13,7 @@ STATUS_COLORS = {
     "FAIL": "#b42318",
     "INFO": "#0c4a6e",
 }
+"""Badge colors used in the HTML renderer."""
 
 STATUS_BADGES = {
     "PASS": "PASS",
@@ -19,9 +21,12 @@ STATUS_BADGES = {
     "FAIL": "FAIL",
     "INFO": "INFO",
 }
+"""Short badge labels displayed in reports."""
+
 
 
 def render_text_report(report: FigureReport) -> str:
+    """Render a compact plain-text report for terminals and logs."""
     lines = ["GoldenViz Report"]
     for axis_report in report.axes_reports:
         axis_name = axis_report.axis_title or f"Axis {axis_report.axis_index + 1}"
@@ -35,6 +40,7 @@ def render_text_report(report: FigureReport) -> str:
 
 
 def _render_rule_row(result: RuleResult) -> str:
+    """Render one HTML table row for a single rule result."""
     color = STATUS_COLORS[result.status]
     suggestion = f"<div style='margin-top:4px;color:#475467;text-align:left;'>{escape(result.suggestion)}</div>" if result.suggestion else ""
     return f"""
@@ -53,6 +59,7 @@ def _render_rule_row(result: RuleResult) -> str:
 
 
 def render_html_report(report: FigureReport) -> str:
+    """Render the notebook HTML card used by GoldenViz."""
     counts = report.summary_counts
     sections = []
     for axis_report in report.axes_reports:
