@@ -24,14 +24,13 @@ _STATE = _AutoState()
 
 
 def _figure_token(fig) -> tuple[int, int]:
-    stale = int(getattr(fig, "stale", False))
-    return (id(fig), len(fig.axes) + stale)
+    return (id(fig), len(fig.axes))
 
 
 
 def _report_figures(figures: List[object]) -> None:
     for fig in figures:
-        if fig is None:
+        if fig is None or not getattr(fig, "axes", None):
             continue
         token = _figure_token(fig)
         if token in _STATE.reported_tokens:
@@ -75,9 +74,15 @@ def _patch_inline_backend() -> bool:
 
     def wrapped_flush_figures(*args, **kwargs):
         show_fn = backend_inline.show
-        active = set(fm.canvas.figure for fm in plt._pylab_helpers.Gcf.get_all_fig_managers())
-        to_draw = [fig for fig in getattr(show_fn, "_to_draw", []) if fig in active]
+        to_draw = []
+        try:
+            queued = list(getattr(show_fn, "_to_draw", []))
+            to_draw = [fig for fig in queued if getattr(fig, "axes", None)]
+        except Exception:
+            to_draw = []
+
         result = _STATE.original_inline_flush(*args, **kwargs)
+
         if to_draw:
             _report_figures(to_draw)
         return result
