@@ -1,14 +1,24 @@
-Rules Checked
-=============
+Implemented rules
+=================
 
-**GoldenViz** is designed to check visualizations against the "Golden Rules of Data Visualization". 
+GoldenViz currently implements the first five Golden Rules.
 
-The library helps users to ensure their data viz communicate the information as clearly and neutrally as possible.
+Rule 1. Clear title
+-------------------
+Checks whether each axis has a title and whether the title is descriptive enough to be useful.
 
-While the library logic is still under development, it will systematically check for rules such as:
+Rule 2. Axis labels
+-------------------
+Checks whether both axes are labeled. Short or missing labels may trigger a warning or a failure.
 
-* Rule 1: Clear and Descriptive Titles
-* Rule 2: Appropriate Use of Color (e.g. Colorblindness Accessibility)
-* Rule 3: Correct Scaling and Zero Baselines for Bar Charts
-* Rule 4: Data-to-Ink Ratio Optimization
-* Rule 5: Avoiding Misleading 3D Effects
+Rule 3. Appropriate scale
+-------------------------
+Checks for obvious scale issues, especially truncated bar charts.
+
+Rule 4. Chart type
+------------------
+Applies lightweight heuristics to identify line, bar, scatter, and histogram charts.
+
+Rule 5. Readable labels and ticks
+---------------------------------
+Checks for dense tick marks, overlapping labels, and hard-to-read axis text.

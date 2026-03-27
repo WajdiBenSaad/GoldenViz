@@ -1,7 +1,5 @@
-API Reference
+API reference
 =============
-
-This section will detail the public API of the **GoldenViz** library.
 
 .. automodule:: GoldenViz
    :members:

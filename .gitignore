@@ -40,3 +40,4 @@ venv.bak/
 *.swp
 goldenviz.md
 notebooks/5_golde_rules_blog_charts.ipynb
+/docs/_build

@@ -1,2 +1,4 @@
-sphinx
-sphinx-rtd-theme
+sphinx>=7
+nbsphinx>=0.9
+ipykernel>=6
+matplotlib>=3.7
