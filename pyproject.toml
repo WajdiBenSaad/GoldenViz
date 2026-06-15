@@ -4,25 +4,25 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "GoldenViz"
-version = "0.1.0"
-description = "GoldenViz is a Python library that analyzes Matplotlib charts and checks whether they follow data visualization best practices."
+version = "0.1.0a1"
+description = "GoldenViz is a Python library that analyzes matplotlib and seaborn charts and checks whether they follow data visualization best practices (the Golden Rules of Data Visualization)."
 readme = "README.md"
 requires-python = ">=3.10"
-license = {text = "MIT"}
+license = "AGPL-3.0-or-later"
 authors = [
   {name = "Wajdi Ben Saad", email = "wajdi@goldenviz.org"}
-]
-dependencies = [
-  "matplotlib>=3.7",
 ]
 keywords = [
     "data visualization",
     "matplotlib",
+    "seaborn",
     "dataviz",
     "visualization",
     "chart",
-    "quality assurance",
-    "jupyter"
+    "plot",
+    "lint",
+    "quality",
+    "best practices"
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -30,21 +30,38 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "Topic :: Scientific/Engineering :: Visualization",
     "Topic :: Software Development :: Quality Assurance",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Operating System :: OS Independent"
+]
+dependencies = [
+    "matplotlib>=3.7",
+]
+
+[project.optional-dependencies]
+docs = [
+    "ipykernel>=6",
+    "numpy>=1.23",
+    "nbsphinx>=0.9",
+    "sphinx>=7",
+    "sphinx-rtd-theme>=2",
+]
+test = [
+    "numpy>=1.23",
+    "pytest>=8",
 ]
 
 [project.urls]
 Homepage = "https://github.com/WajdiBenSaad/GoldenViz"
 Documentation = "https://goldenviz.readthedocs.io"
 Repository = "https://github.com/WajdiBenSaad/GoldenViz"
-
-[tool.setuptools]
-package-dir = {"" = "src"}
+Issues = "https://github.com/WajdiBenSaad/GoldenViz/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

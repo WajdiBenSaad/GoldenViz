@@ -8,6 +8,22 @@ from GoldenViz._results import RuleResult
 from GoldenViz._utils import stringify_label
 from GoldenViz.rules.base import Rule
 
+GENERIC_LABELS = {
+    "amount",
+    "category",
+    "count",
+    "date",
+    "index",
+    "label",
+    "name",
+    "number",
+    "score",
+    "time",
+    "value",
+    "x",
+    "y",
+}
+
 
 class AxisLabelsRule(Rule):
     """Check whether both x-axis and y-axis labels are present and usable."""
@@ -38,7 +54,8 @@ class AxisLabelsRule(Rule):
                 details={"xlabel": xlabel, "ylabel": ylabel},
             )
 
-        too_short = [name for name, value in {"x-axis": xlabel, "y-axis": ylabel}.items() if len(value) < 2]
+        labels = {"x-axis": xlabel, "y-axis": ylabel}
+        too_short = [name for name, value in labels.items() if len(value) < 2]
         if too_short:
             return RuleResult(
                 rule_id=self.rule_id,
@@ -48,6 +65,18 @@ class AxisLabelsRule(Rule):
                 suggestion="Use labels that are explicit enough for a reader who has not seen the dataset.",
                 axis_title=axis_title,
                 details={"xlabel": xlabel, "ylabel": ylabel},
+            )
+
+        generic = [name for name, value in labels.items() if value.casefold() in GENERIC_LABELS]
+        if generic:
+            return RuleResult(
+                rule_id=self.rule_id,
+                rule_name=self.rule_name,
+                status="WARNING",
+                message=f"Axis labels may be too generic: {', '.join(generic)}.",
+                suggestion="Name the measured quantity or category directly instead of using generic labels.",
+                axis_title=axis_title,
+                details={"xlabel": xlabel, "ylabel": ylabel, "generic_labels": generic},
             )
 
         return RuleResult(

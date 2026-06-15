@@ -7,14 +7,60 @@ import matplotlib.pyplot as plt
 from GoldenViz._results import AxisReport, FigureReport
 from GoldenViz._utils import ensure_canvas_drawn, visible_axes
 from GoldenViz.display import display_report
-from GoldenViz.rules import AxisLabelsRule, ChartTypeRule, ReadabilityRule, ScaleRule, TitleRule
+from GoldenViz.rules import (
+    AnnotationRule,
+    AreaBaselineRule,
+    AspectRatioRule,
+    AxisLabelsRule,
+    BarSortingRule,
+    CategoryColorRule,
+    CategoryCountRule,
+    ChartTypeRule,
+    ChartjunkRule,
+    ColorAccessibilityRule,
+    ColorMapRule,
+    DateAxisRule,
+    DivergingZeroRule,
+    DirectLabelingRule,
+    DualAxisRule,
+    HistogramBinsRule,
+    LegendRule,
+    OverplottingRule,
+    PrecisionRule,
+    ReadabilityRule,
+    ScaleRule,
+    TitleRule,
+    UnitsRule,
+    UncertaintyRule,
+    VisualEconomyRule,
+)
 
 DEFAULT_RULES = [
     TitleRule(),
     AxisLabelsRule(),
+    UnitsRule(),
+    LegendRule(),
+    AnnotationRule(),
+    UncertaintyRule(),
+    ReadabilityRule(),
+    ColorAccessibilityRule(),
+    DirectLabelingRule(),
+    ChartjunkRule(),
+    CategoryCountRule(),
+    BarSortingRule(),
+    OverplottingRule(),
+    PrecisionRule(),
+    DateAxisRule(),
+    VisualEconomyRule(),
     ScaleRule(),
     ChartTypeRule(),
-    ReadabilityRule(),
+    ColorMapRule(),
+    DualAxisRule(),
+    AreaBaselineRule(),
+    AspectRatioRule(),
+    HistogramBinsRule(),
+    CategoryColorRule(),
+    DivergingZeroRule(),
 ]
 """Default rule set applied to every visible axis."""
 

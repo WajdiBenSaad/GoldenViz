@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+from statistics import median
 from typing import List
 
 from matplotlib.axes import Axes
+from matplotlib.patches import Wedge
 
 
 def is_notebook_environment() -> bool:
@@ -73,16 +75,53 @@ def is_histogram(ax: Axes) -> bool:
     if not patches:
         return False
     widths = [round(p.get_width(), 8) for p in patches if hasattr(p, "get_width")]
-    return len(widths) >= 5 and len(set(widths)) <= max(1, len(widths) // 3)
+    x_positions = sorted(round(p.get_x(), 8) for p in patches if hasattr(p, "get_x"))
+    if len(widths) < 5 or len(set(widths)) > max(1, len(widths) // 3):
+        return False
+    if len(x_positions) < 2:
+        return False
+    typical_width = median(abs(width) for width in widths)
+    gaps = [right - left for left, right in zip(x_positions, x_positions[1:])]
+    return median(gaps) <= typical_width * 1.05
+
+
+def is_pie_chart(ax: Axes) -> bool:
+    """Return whether the axis looks like a pie chart."""
+    wedges = [patch for patch in ax.patches if isinstance(patch, Wedge)]
+    return len(wedges) >= 2 and ax.get_aspect() in {"equal", 1.0}
+
+
+def bar_orientation(ax: Axes) -> str:
+    """Infer whether bar marks are vertical, horizontal, or unclear."""
+    patches = [patch for patch in ax.patches if hasattr(patch, "get_width") and hasattr(patch, "get_height")]
+    if not patches:
+        return "unknown"
+
+    near_zero_x = sum(abs(patch.get_x()) < 1e-9 for patch in patches)
+    near_zero_y = sum(abs(patch.get_y()) < 1e-9 for patch in patches)
+    if near_zero_x > near_zero_y:
+        return "horizontal"
+    if near_zero_y > near_zero_x:
+        return "vertical"
+
+    widths = [abs(patch.get_width()) for patch in patches]
+    heights = [abs(patch.get_height()) for patch in patches]
+    if median(widths) > median(heights):
+        return "horizontal"
+    if median(heights) > median(widths):
+        return "vertical"
+    return "unknown"
 
 
 
 def axis_kind(ax: Axes) -> str:
     """Classify an axis into a small set of chart types used by the rules."""
-    if is_bar_chart(ax):
-        return "bar"
+    if is_pie_chart(ax):
+        return "pie"
     if is_histogram(ax):
         return "histogram"
+    if is_bar_chart(ax):
+        return "bar"
     if is_scatter_chart(ax) and not ax.lines:
         return "scatter"
     if is_line_chart(ax):

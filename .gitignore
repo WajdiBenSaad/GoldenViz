@@ -1,4 +1,4 @@
-# Byte-compiled / optimized / DLL files
+# Python bytecode
 __pycache__/
 *.py[cod]
 *$py.class
@@ -22,21 +22,36 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Environment
+# Virtual environments and local environment files
 .env
-.venv
+.venv/
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
 
+# Test, docs, and local build outputs
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+docs/_build/
+
+# Local Matplotlib cache
+.matplotlib/
+
 # macOS
 .DS_Store
 
-# IDEs
+# IDE/editor files
 .idea/
 .vscode/
 *.swp
+
+# Project-local scratch files
 goldenviz.md
 notebooks/5_golde_rules_blog_charts.ipynb
+docs/notebooks/
+project_docs/

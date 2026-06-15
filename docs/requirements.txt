@@ -1,4 +1,6 @@
 sphinx>=7
+sphinx-rtd-theme>=2
 nbsphinx>=0.9
 ipykernel>=6
 matplotlib>=3.7
+numpy>=1.23

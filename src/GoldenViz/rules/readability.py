@@ -12,7 +12,7 @@ from GoldenViz.rules.base import Rule
 class ReadabilityRule(Rule):
     """Detect crowded, overlapping, or tiny tick labels."""
 
-    rule_id = "R5"
+    rule_id = "R7"
     rule_name = "Readable labels and ticks"
 
     def evaluate(self, ax: Axes) -> RuleResult:
@@ -24,7 +24,23 @@ class ReadabilityRule(Rule):
         ylabels = [tick for tick in ax.get_yticklabels() if tick.get_text()]
         tick_count = len(xlabels) + len(ylabels)
 
-        if tick_count > 24:
+        renderer = ax.figure.canvas.get_renderer() if hasattr(ax.figure.canvas, "get_renderer") else None
+        if renderer is not None:
+            for axis_name, labels in {"x-axis": xlabels, "y-axis": ylabels}.items():
+                boxes = [tick.get_window_extent(renderer=renderer) for tick in labels if tick.get_visible()]
+                overlaps = sum(1 for left, right in zip(boxes, boxes[1:]) if left.overlaps(right))
+                if overlaps:
+                    return RuleResult(
+                        rule_id=self.rule_id,
+                        rule_name=self.rule_name,
+                        status="FAIL",
+                        message=f"Overlapping {axis_name} tick labels detected.",
+                        suggestion="Rotate labels, enlarge the figure, or reduce the number of displayed ticks.",
+                        axis_title=axis_title,
+                        details={"axis": axis_name, "overlaps": overlaps},
+                    )
+
+        if len(xlabels) > 12 or len(ylabels) > 12:
             return RuleResult(
                 rule_id=self.rule_id,
                 rule_name=self.rule_name,
@@ -32,26 +48,20 @@ class ReadabilityRule(Rule):
                 message=f"The axis shows many tick labels ({tick_count}).",
                 suggestion="Reduce the number of ticks or rotate/simplify labels to improve legibility.",
                 axis_title=axis_title,
-                details={"tick_count": tick_count},
+                details={"x_tick_count": len(xlabels), "y_tick_count": len(ylabels), "tick_count": tick_count},
             )
 
-        renderer = ax.figure.canvas.get_renderer() if hasattr(ax.figure.canvas, "get_renderer") else None
-        if renderer is not None:
-            xboxes = [tick.get_window_extent(renderer=renderer) for tick in xlabels]
-            overlaps = 0
-            for left, right in zip(xboxes, xboxes[1:]):
-                if left.overlaps(right):
-                    overlaps += 1
-            if overlaps:
-                return RuleResult(
-                    rule_id=self.rule_id,
-                    rule_name=self.rule_name,
-                    status="FAIL",
-                    message="Overlapping x-axis tick labels detected.",
-                    suggestion="Rotate labels, enlarge the figure, or reduce the number of displayed ticks.",
-                    axis_title=axis_title,
-                    details={"overlaps": overlaps},
-                )
+        steep_rotations = [abs(tick.get_rotation()) for tick in xlabels if abs(tick.get_rotation()) > 75]
+        if len(steep_rotations) >= 3:
+            return RuleResult(
+                rule_id=self.rule_id,
+                rule_name=self.rule_name,
+                status="WARNING",
+                message="Several x-axis labels are nearly vertical.",
+                suggestion="Shorten labels or use a wider figure when many category names need to be shown.",
+                axis_title=axis_title,
+                details={"steep_label_count": len(steep_rotations)},
+            )
 
         font_sizes = [tick.get_fontsize() for tick in xlabels + ylabels]
         if font_sizes and min(font_sizes) < 8:

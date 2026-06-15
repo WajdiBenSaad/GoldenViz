@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use GoldenViz, please cite it using the metadata below."
+title: "GoldenViz: Rule-Based Visual Quality Assessment for Matplotlib Charts"
+type: software
+authors:
+  - family-names: "Ben Saad"
+    given-names: "Wajdi"
+email: "wajdi@goldenviz.org"
+version: "0.1.0a1"
+date-released: "2026-05-29"
+repository-code: "https://github.com/WajdiBenSaad/GoldenViz"
+url: "https://goldenviz.readthedocs.io"
+license: "AGPL-3.0-or-later"
+keywords:
+  - data visualization
+  - matplotlib
+  - chart quality
+  - visual analytics
+  - visualization literacy
+abstract: >
+  GoldenViz is a Python library for checking Matplotlib charts against
+  practical data visualization rules. It provides structured feedback for
+  visual quality assurance, teaching, and notebook-based chart review.

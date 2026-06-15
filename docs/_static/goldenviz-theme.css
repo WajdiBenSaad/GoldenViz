@@ -1,0 +1,266 @@
+/* Warm accent layer for sphinx_rtd_theme. */
+
+:root {
+  --gv-page-bg: #fff7ec;
+  --gv-sidebar-bg: #f6e5ca;
+  --gv-text: #3b2b20;
+  --gv-accent: #8a3f24;
+  --gv-input-bg: #fffaf2;
+  --gv-border: #d9aa6f;
+  --gv-border-soft: #dfb989;
+  --gv-border-muted: #d7ab77;
+  --gv-table-header: #f4dfbf;
+}
+
+body,
+.wy-body-for-nav,
+.wy-nav-content-wrap {
+  background: var(--gv-page-bg);
+  color: var(--gv-text);
+}
+
+.wy-nav-content {
+  background: var(--gv-page-bg);
+  max-width: 1240px;
+}
+
+.wy-nav-side {
+  background: var(--gv-sidebar-bg) !important;
+}
+
+.wy-side-nav-search,
+.wy-nav-top {
+  background: var(--gv-border-soft) !important;
+  color: var(--gv-text) !important;
+}
+
+.wy-side-nav-search > a,
+.wy-side-nav-search .wy-dropdown > a,
+.wy-nav-top a {
+  color: var(--gv-text) !important;
+}
+
+.wy-side-nav-search > a {
+  display: block;
+  margin: 0 auto 10px auto;
+  padding: 0;
+}
+
+.wy-side-nav-search > a img.logo {
+  display: block;
+  width: auto;
+  max-width: 133px;
+  max-height: 144px;
+  object-fit: contain;
+  margin: 0 auto 8px auto;
+}
+
+.wy-side-nav-search > a:hover,
+.wy-side-nav-search .wy-dropdown > a:hover,
+.wy-nav-top a:hover {
+  color: var(--gv-accent) !important;
+}
+
+.wy-side-nav-search input[type="text"] {
+  border-color: var(--gv-border);
+  background: var(--gv-input-bg);
+  color: var(--gv-text);
+}
+
+.wy-menu-vertical a {
+  color: var(--gv-text);
+}
+
+.wy-menu-vertical a:hover,
+.wy-menu-vertical li.current > a,
+.wy-menu-vertical li.on a {
+  background: var(--gv-border-soft) !important;
+  color: var(--gv-accent) !important;
+}
+
+.wy-menu-vertical li.current,
+.wy-menu-vertical li.toctree-l1.current > a {
+  background: var(--gv-sidebar-bg) !important;
+}
+
+.wy-menu-vertical li.current a {
+  color: var(--gv-text) !important;
+}
+
+.wy-menu-vertical li.current a:hover {
+  background: var(--gv-border-soft) !important;
+  color: var(--gv-accent) !important;
+}
+
+.wy-menu-vertical header,
+.wy-menu-vertical p.caption {
+  color: var(--gv-accent) !important;
+}
+
+.wy-menu-vertical li.toctree-l1.current,
+.wy-menu-vertical li.toctree-l2.current,
+.wy-menu-vertical li.toctree-l3.current,
+.wy-menu-vertical li.toctree-l4.current {
+  background: var(--gv-sidebar-bg) !important;
+}
+
+.wy-menu-vertical li.toctree-l1.current > a,
+.wy-menu-vertical li.toctree-l2.current > a,
+.wy-menu-vertical li.toctree-l3.current > a,
+.wy-menu-vertical li.toctree-l4.current > a {
+  background: var(--gv-border-soft) !important;
+  border-color: var(--gv-border-muted) !important;
+}
+
+a,
+a:visited,
+.rst-content a:visited {
+  color: var(--gv-accent);
+}
+
+a:hover {
+  color: #5f2716;
+}
+
+.rst-content h1,
+.rst-content h2,
+.rst-content h3,
+.rst-content h4 {
+  color: var(--gv-text);
+}
+
+.rst-content code.literal,
+.rst-content tt.literal {
+  background: var(--gv-input-bg);
+  border: 1px solid var(--gv-border-soft);
+  color: var(--gv-accent);
+}
+
+.rst-content div[class^="highlight"],
+.rst-content pre.literal-block {
+  background: var(--gv-input-bg);
+  border: 1px solid var(--gv-border-soft);
+}
+
+.highlight {
+  background: var(--gv-input-bg);
+}
+
+.rst-content table.docutils,
+.rst-content table.field-list,
+.wy-table,
+.wy-table-bordered-all {
+  background: var(--gv-page-bg) !important;
+  border: 1px solid var(--gv-border) !important;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.rst-content table.docutils th,
+.rst-content table.docutils td,
+.rst-content table.field-list th,
+.rst-content table.field-list td,
+.wy-table th,
+.wy-table td {
+  background: var(--gv-page-bg) !important;
+  border-color: var(--gv-border-muted) !important;
+  color: var(--gv-text) !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  vertical-align: top;
+}
+
+.rst-content table.docutils p,
+.rst-content table.field-list p,
+.wy-table p {
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+.rst-content table.docutils thead th,
+.rst-content table.docutils th,
+.wy-table thead th,
+.wy-table th {
+  background: var(--gv-table-header) !important;
+  color: var(--gv-text) !important;
+  font-weight: 700;
+}
+
+.rst-content table.docutils tr:nth-child(even) td,
+.wy-table tr:nth-child(even) td,
+.wy-table-striped tr:nth-child(even) td,
+.wy-table-odd td,
+.wy-table-striped tr.even td {
+  background: var(--gv-input-bg) !important;
+}
+
+.rst-content table.docutils tr:nth-child(odd) td,
+.wy-table tr:nth-child(odd) td,
+.wy-table-striped tr:nth-child(odd) td,
+.wy-table-even td,
+.wy-table-striped tr.odd td {
+  background: var(--gv-page-bg) !important;
+}
+
+.admonition,
+.note,
+.warning {
+  background: var(--gv-input-bg);
+  border-color: var(--gv-border);
+}
+
+.admonition-title {
+  background: var(--gv-accent) !important;
+}
+
+.wy-breadcrumbs,
+.wy-breadcrumbs a {
+  color: var(--gv-accent);
+}
+
+footer {
+  color: var(--gv-text);
+}
+
+/* Notebook examples are rendered as visual documentation: keep outputs visible,
+   but hide executable input cells from the public HTML pages. */
+.nbinput {
+  display: none;
+}
+
+.rule-example-image {
+  max-width: 100%;
+  margin: 0.75rem 0 1.25rem;
+  border: 1px solid var(--gv-border-muted);
+}
+
+.rule-separator {
+  margin: 2.4rem 0 2.1rem;
+  text-align: center;
+  color: var(--gv-accent);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 0.45rem;
+}
+
+.rst-content table.gv-rules-overview .gv-rule-family {
+  background: var(--gv-table-header) !important;
+  font-weight: 700;
+  width: 14%;
+  border-right: 2px solid var(--gv-accent) !important;
+}
+
+.rst-content table.gv-rules-overview th:first-child {
+  width: 14%;
+  border-right: 2px solid var(--gv-accent) !important;
+}
+
+.rst-content table.gv-rules-overview th:nth-child(2),
+.rst-content table.gv-rules-overview td:nth-child(2) {
+  width: 24%;
+}
+
+.rst-content .toctree-wrapper:empty {
+  display: none;
+}
