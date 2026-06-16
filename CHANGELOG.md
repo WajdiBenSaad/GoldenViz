@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0 - 2026-06-16
+
+### Changed
+
+- Promoted the alpha release line to the first stable PyPI-visible `0.1.0` release.
+- Keeps the release infrastructure fixes and README visual preview from `0.1.0a2`.
+- Simplified the README report preview so it renders cleanly on PyPI.
+
 ## 0.1.0a2 - 2026-06-16
 
 ### Fixed
