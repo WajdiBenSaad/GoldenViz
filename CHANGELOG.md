@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.0a2 - 2026-06-16
+
+### Fixed
+
+- Added Pandoc setup for GitHub Actions and ReadTheDocs documentation builds.
+- Updated GitHub workflow actions to Node 24-compatible versions.
+
+### Changed
+
+- Added a README visual preview showing the Matplotlib quickstart chart and a compact GoldenViz HTML report.
+
 ## 0.1.0a1 - 2026-06-16
 
 ### Added

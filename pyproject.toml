@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "GoldenViz"
-version = "0.1.0a1"
+version = "0.1.0a2"
 description = "GoldenViz is a Python library that analyzes matplotlib and seaborn charts and checks whether they follow data visualization best practices (the Golden Rules of Data Visualization)."
 readme = "README.md"
 requires-python = ">=3.10"
