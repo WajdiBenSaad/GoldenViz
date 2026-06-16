@@ -12,7 +12,7 @@ Current citation metadata:
 .. code-block:: text
 
    Wajdi Ben Saad. GoldenViz: Rule-Based Visual Quality Assessment for
-   Matplotlib Charts. Version 0.1.0.
+   Matplotlib Charts. Version 0.1.1.
    https://github.com/WajdiBenSaad/GoldenViz
 
 GoldenViz does not yet have a Zenodo DOI or JOSS paper DOI. A software archive
