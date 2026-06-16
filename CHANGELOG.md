@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.1 - 2026-06-16
+
+### Fixed
+
+- Fixed the GoldenViz report preview image URL in the README so PyPI accepts and renders it correctly.
+- Kept the cropped GoldenViz report preview image.
+
+### Notes
+
+- No runtime API changes from `0.1.0`.
+
 ## 0.1.0 - 2026-06-16
 
 ### Changed
