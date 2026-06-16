@@ -60,7 +60,7 @@ https://goldenviz.readthedocs.io/en/latest/installation.html
 
 Report preview:
 
-![GoldenViz report preview](docs/_static/goldenviz_installation_check_report.png)
+![GoldenViz report preview](https://raw.githubusercontent.com/WajdiBenSaad/GoldenViz/main/docs/_static/goldenviz_installation_check_report.png)
 
 To get a structured report instead of displaying it:
 
