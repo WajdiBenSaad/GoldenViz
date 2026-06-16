@@ -7,7 +7,7 @@ It is designed as a visual QA and teaching layer. GoldenViz does not create
 charts for you; it inspects charts you already made and returns structured
 feedback.
 
-GoldenViz is inspired by the course
+GoldenViz is inspired by the course and book:
 [The 25 Golden Rules of Data Viz](https://www.goldenviz.org).
 
 ## Installation
