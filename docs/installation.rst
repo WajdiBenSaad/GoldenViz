@@ -36,6 +36,21 @@ figure:
 
    gv.check(fig)
 
+After running the code, you should see two outputs: first the Matplotlib chart,
+then the GoldenViz report.
+
+Expected chart output:
+
+.. image:: _static/goldenviz_installation_check_chart.png
+   :alt: Matplotlib chart produced by the installation check
+   :align: center
+   :width: 50%
+
+Expected GoldenViz report output:
+
+.. raw:: html
+   :file: _static/goldenviz_installation_check_report.html
+
 Notebook users
 --------------
 
