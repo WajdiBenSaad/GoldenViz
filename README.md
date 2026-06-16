@@ -72,6 +72,8 @@ GoldenViz uses heuristic checks. It can help detect common chart quality
 issues, but it does not replace human judgment and may produce false positives
 or false negatives.
 
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
+
 ## Development
 
 From a local checkout:

@@ -15,8 +15,8 @@ The 25 GoldenViz rules
 ----------------------
 
 GoldenViz checks Matplotlib charts against 25 practical visualization rules.
-The rule set is inspired by the 25 Golden Rules course by Wajdi Ben Saad. A
-course link will be added here later.
+The rule set is inspired by `The 25 Golden Rules of Data Viz
+<https://www.goldenviz.org>`_ by Wajdi Ben Saad.
 
 The rules are grouped into three families:
 
