@@ -11,6 +11,7 @@
 - Structured report objects for programmatic use.
 - HTML and text report renderers.
 - Documentation pages for installation, quick start, manual checks, auto mode, examples, citation, license, and trademark information.
+- Expanded API reference covering public functions, report objects, status values, and programmatic usage patterns.
 - Example gallery covering the 25 rules.
 - CI checks for tests, documentation build, package build, metadata validation, and clean wheel install smoke testing.
 
